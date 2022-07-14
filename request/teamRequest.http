@@ -1,0 +1,19 @@
+### get all teams
+GET http://localhost:3000/getAllTeams
+
+### get team by id (successfully request)
+GET http://localhost:3000/getTeam/1
+###
+### get team by id (id not found)
+GET http://localhost:3000/getTeam/3aa9aa36-1860-4655-95cf-5275e7667738
+
+###
+POST http://localhost:3000/createTeam
+
+Content-Type: application/json
+
+{
+    "name": "Manchester City",
+    "totalPlayers": 10,
+    "country": "England"
+}
