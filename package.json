@@ -1,7 +1,7 @@
 {
   "name": "shop",
-  "version": "1.0.0",
-  "description": "Hola desde el proyecto shop",
+  "version": "1.0.1",
+  "description": "Soccer app application",
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon",

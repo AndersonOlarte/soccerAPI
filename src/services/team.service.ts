@@ -3,8 +3,7 @@ import {Team, TeamDao} from "../entity/team.entities";
 import { teamRepository } from "../migration/data-source";
 
 export class TeamService {
-    
-    
+
     async getAll (): Promise<Team []> {
         return new Promise((resolve, reject) => {
             teamRepository.find()
@@ -24,7 +23,7 @@ export class TeamService {
     };
 
     async create(teamDao: TeamDao): Promise<Team> {
-        
+
         return new Promise((resolve, reject) => {
             const newTeam = teamRepository.create(teamDao);
             teamRepository.save(newTeam)

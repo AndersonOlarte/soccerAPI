@@ -36,17 +36,6 @@ components:
         name: Real Madrid
         totalPlayers: 27
         country: Spain
-    responseOk:
-      type: object
-      properties:
-        statusCode:
-          type: number
-          description: Status of the http request
-        data:
-          type: array
-          description: Contains the data retrieved from the data base.
-          items:
-            $ref: "#/components/schemas/Team"
 
 tags:
   name: Team
