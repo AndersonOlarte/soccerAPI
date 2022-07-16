@@ -10,10 +10,9 @@ GET http://localhost:3000/getTeam/3aa9aa36-1860-4655-95cf-5275e7667738
 ###
 POST http://localhost:3000/createTeam
 
-Content-Type: application/json
+content-type: application/json
 
 {
-    "name": "Manchester City",
-    "totalPlayers": 10,
-    "country": "England"
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
 }

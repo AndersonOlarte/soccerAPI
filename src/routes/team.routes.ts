@@ -3,12 +3,12 @@ import { createNewTeam, deleteTeam, getAllTeams, getTeamById, updateTeam } from 
 
 export const teamRoutes: Router = Router();
 
-teamRoutes.get('/getAllTeams', getAllTeams);
+teamRoutes.get('/api/teams', getAllTeams);
 
-teamRoutes.get('/getTeam/:id', getTeamById);
+teamRoutes.get('/api/team/:id', getTeamById);
 
-teamRoutes.post('/createTeam', createNewTeam);
+teamRoutes.post('/api/team', createNewTeam);
 
-teamRoutes.put('/updateTeam', updateTeam);
+teamRoutes.put('/api/team', updateTeam);
 
-teamRoutes.delete('/deleteTeam/:id', deleteTeam);
+teamRoutes.delete('/api/team/:id', deleteTeam);

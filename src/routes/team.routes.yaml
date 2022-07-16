@@ -1,0 +1,292 @@
+components:
+  schemas:
+    TeamDao:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name send to send in database
+        totalPlayers:
+          type: number
+          description: Total amount in the team
+        country:
+          type: string
+          description: Country where the team belongs
+      example:
+        name: Real Madrid
+        totalPlayers: 27
+        country: Spain
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique id that identified the team
+        name:
+          type: string
+          description: Name send to send in database
+        totalPlayers:
+          type: number
+          description: Total amount in the team
+        country:
+          type: string
+          description: Country where the team belongs
+      example:
+        id: 6418232f-885b-40b5-ac7b-5eabab4031c4
+        name: Real Madrid
+        totalPlayers: 27
+        country: Spain
+    responseOk:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: Status of the http request
+        data:
+          type: array
+          description: Contains the data retrieved from the data base.
+          items:
+            $ref: "#/components/schemas/Team"
+
+tags:
+  name: Team
+  description: Team EndPoint
+
+#paths
+/api/teams:
+  get:
+    summary: Return all teams in the list
+    tags: [Team]
+    responses:
+      200:
+        description: List of teams
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusCode:
+                  type: number
+                  example: 200
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Team'
+      500:
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusCode:
+                  type: number
+                  example: 500
+                data:
+                  type: string
+                  example: Internal server Error
+
+
+/api/team/{id}:
+  get:
+    parameters:
+      - in: path
+        name: teamId
+        required: true
+        schema:
+          type: string
+        description: the team id
+        example: 6418232f-885b-40b5-ac7b-5eabab4031c4
+    summary: Return a specific team by id
+    tags: [Team]
+    responses:
+      200:
+        description: Retrieve team by id
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusCode:
+                  type: number
+                  example: 200
+                data:
+                  type: array
+                  description: Return the found team
+                  items:
+                    $ref: "#/components/schemas/Team"
+      400:
+        description: Invalid input id
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusCode:
+                  type: number
+                  example: 400
+                data:
+                  type: string
+                  example: It was imposible find a team with id 6418232f-885b-40b5-ac7b-5eabab4031c4
+      500:
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusCode:
+                  type: number
+                  example: 500
+                data:
+                  type: string
+                  example: Internal server Error
+  delete:
+    parameters:
+      - in: path
+        name: teamId
+        required: true
+        schema:
+          type: string
+        description: The team id
+        example: 6418232f-885b-40b5-ac7b-5eabab4031c4
+    summary: Delete a specific team by id
+    tags: [Team]
+    responses:
+      200:
+        description: Team was Deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusCode:
+                  type: number
+                  example: 200
+                data:
+                  type: array
+                  description: Return the deleted team
+                  items:
+                    $ref: "#/components/schemas/Team"
+      400:
+        description: Invalid input id
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusCode:
+                  type: number
+                  example: 400
+                data:
+                  type: string
+                  example: It was imposible find a team with id 6418232f-885b-40b5-ac7b-5eabab4031c4
+      500:
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusCode:
+                  type: number
+                  example: 500
+                data:
+                  type: string
+                  example: Internal server Error
+
+/api/team:
+  post:
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TeamDao"
+    summary: Create a new team
+    tags: [Team]
+    responses:
+      201:
+        description: The team was created successfully
+        content:
+          application/json:
+            schema:
+              properties:
+                statusCode:
+                  type: number
+                  example: 201
+                data:
+                  type: array
+                  items:
+                    $ref: "#components/schemas/Team"
+      400:
+        description:  Bad schema request
+        content:
+          application/json:
+            schema:
+              properties:
+                statusCode:
+                  type: number
+                  example: 400
+                data:
+                  type: string
+                  example: Bad schema request
+      500:
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusCode:
+                  type: number
+                  example: 500
+                data:
+                  type: string
+                  example: Internal server Error
+  put:
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Team"
+    summary: Update a team
+    tags: [Team]
+    responses:
+      200:
+        description: The team was updated successfully
+        content:
+          application/json:
+            schema:
+              properties:
+                statusCode:
+                  type: number
+                  example: 200
+                data:
+                  type: array
+                  items:
+                    $ref: "#components/schemas/Team"
+      400:
+        description:  Bad schema request
+        content:
+          application/json:
+            schema:
+              properties:
+                statusCode:
+                  type: number
+                  example: 400
+                data:
+                  type: string
+                  example: Bad schema request
+      500:
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                statusCode:
+                  type: number
+                  example: 500
+                data:
+                  type: string
+                  example: Internal server Error

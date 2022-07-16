@@ -38,7 +38,7 @@ export const getTeamById: Handler = async (req: Request, res: Response) => {
         }
         else {
             message = {
-                statusCode: 401,
+                statusCode: 400,
                 data: `it was imposible find a team with id ${requestId}`
             }
         }
@@ -63,7 +63,7 @@ export const createNewTeam: Handler = async (req: Request, res: Response) => {
         const teamSend: TeamDao = new TeamDao(req.body);
         const newTeam: Team = await teamService.create(teamSend);
         message = {
-            statusCode: 200,
+            statusCode: 201,
             data: [newTeam]
         }
     } catch (error: any) {

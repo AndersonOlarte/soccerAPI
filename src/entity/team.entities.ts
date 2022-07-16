@@ -1,5 +1,4 @@
-import { Entity, PrimaryColumn,Column, PrimaryGeneratedColumn } from "typeorm";
-import {v4 as uuidv4} from 'uuid';
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 import { IReqBody } from "../interfaces/IReqBody";
 
 export class TeamDao {
