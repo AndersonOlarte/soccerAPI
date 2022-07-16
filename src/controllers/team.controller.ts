@@ -65,7 +65,7 @@ export const deleteTeam = async (req: Request, res: Response) => {
     try {
         const aswer: DeleteResult = await teamService.deleteById(req.params.id);
         message.setStatus(
-            aswer.affected ? 200: 401,
+            aswer.affected ? 200: 400,
             aswer.affected ? 'team deleted succesfully': `Team with id ${req.params.id} does not exist`
         );
     }

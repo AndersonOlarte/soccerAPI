@@ -1,14 +1,14 @@
 ### get all teams
-GET http://localhost:3000/getAllTeams
+GET http://localhost:3000/api/teams
 
 ### get team by id (successfully request)
-GET http://localhost:3000/getTeam/1
+GET http://localhost:3000/api/3aa9aa36-1860-4655-95cf-5275e7667738
 ###
 ### get team by id (id not found)
-GET http://localhost:3000/getTeam/3aa9aa36-1860-4655-95cf-5275e7667738
+GET http://localhost:3000/api/getTeam/3aa9aa6-1860-4655-95cf-5275e7667738
 
 ###
-POST http://localhost:3000/createTeam
+POST http://localhost:3000/api/team
 
 content-type: application/json
 
@@ -16,3 +16,6 @@ content-type: application/json
     "name": "sample",
     "time": "Wed, 21 Oct 2015 18:27:50 GMT"
 }
+
+###
+DELETE http://localhost:3000/api/team/3aa9aa36-1860-4655-95cf-5275e7667738

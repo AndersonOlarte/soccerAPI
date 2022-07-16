@@ -2,8 +2,11 @@ import { DeleteResult } from "typeorm";
 import {Team, TeamDao} from "../entity/team.entities";
 import { teamRepository } from "../migration/data-source";
 
-export class TeamService {
 
+export class TeamService {
+    /**
+     * @returns All of teams that are stored in dataBase
+     */
     async getAll (): Promise<Team []> {
         return new Promise((resolve, reject) => {
             teamRepository.find()
@@ -11,7 +14,10 @@ export class TeamService {
             .catch(reject);
         })
     };
-
+    /**
+     * @param id 
+     * @returns Team what matches with the corresponding ID
+     */
     async getById (id: string): Promise<Team []> {
         return new Promise((resolve, reject) => {
             teamRepository.findBy({
@@ -23,6 +29,11 @@ export class TeamService {
     };
 
     async create(teamDao: TeamDao): Promise<Team> {
+        /**
+         * @param teamDao
+         * @returns Team what was created
+         * @throws Error
+         */
 
         return new Promise((resolve, reject) => {
             const newTeam = teamRepository.create(teamDao);
