@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Unique, PrimaryColumn } from "typeorm";
 import { IReqBody } from "../interfaces/IReqBody";
+import { Player } from "./player.entities";
 
 export class TeamDao {
     name: string;
@@ -14,12 +15,10 @@ export class TeamDao {
 }
 
 @Entity()
+@Unique(["name"])
 export class Team {
 
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
-
-    @Column()
+    @PrimaryColumn()
     name: string;
 
     @Column()
@@ -28,10 +27,18 @@ export class Team {
     @Column()
     country: string;
 
+    @OneToMany(() => Player, (player) => player.team)
+    players: Player[]
+
     constructor() {
         this.name = 'none',
         this.totalPlayers = 0.
         this.country = 'none'
     }
+    static properties: Array<string> = [
+        'country',
+        'name',
+        'totalPlayers',
+    ];
 
 }

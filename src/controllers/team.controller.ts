@@ -3,35 +3,54 @@ import { TeamService } from "../services/team.service";
 import {Team, TeamDao} from "../entity/team.entities";
 import { DeleteResult } from "typeorm";
 import { DataResponse } from "../classes/Response";
+import { Player } from "../entity/player.entities";
+import { stringChangeFormat, validateBody } from "../assests/Assets";
 
 
 const teamService: TeamService = new TeamService();
 let message: DataResponse = new DataResponse();
 
 export const getAllTeams: Handler = async (req: Request, res: Response) => {
-
     try {
         const teams: Team[] = await teamService.getAll();
         message.setStatus(200, teams);
     } catch (error: any) {
-        message.setStatus(200, error);
+        message.setStatus(500, error);
     }
     return res.status(message.getStatusCode).json(message.getResponse);
 }
 
-export const getTeamById: Handler = async (req: Request, res: Response) => {
-    const requestId: string = req.params.id;
+export const getTeamByName: Handler = async (req: Request, res: Response) => {
+    const requestName: string = req.params.name.replace("-", " ");
     try {
-        const team: Team[] = await teamService.getById(requestId);
+        const team: Team[] = await teamService.getByAttribute("name", requestName);
 
         if(team.length) message.setStatus(200, team);
-        else message.setStatus(400, `it was imposible find a team with id ${requestId}`);
+        else message.setStatus(400, `It was imposible find a team with name ${requestName}`);
 
     } catch (error: any) {
         message.setStatus(500, error);
     }
     return res.status(message.getStatusCode).json(message.getResponse);
 };
+
+export const getPlayers: Handler = async (req: Request, res: Response) => {
+    try {
+        const teamName: string = req.params.name.replace("-"," ",);
+        const team: Team [] = await teamService.getByAttribute("name", teamName);
+        if (team.length) {
+            const players: Player[] = await teamService.getPlayers(team[0]);
+            console.log("Players", players);
+            message.setStatus(200, players);
+        }
+        else {
+            message.setStatus(400,`The team with name ${teamName} was not found.`);
+        }
+    } catch (error) {
+        message.setStatus(500,`Error: ${error}`);
+    }
+    res.status(message.getStatusCode).json(message.getResponse);
+}
 
 export const createNewTeam: Handler = async (req: Request, res: Response) => {
 
@@ -50,8 +69,12 @@ export const createNewTeam: Handler = async (req: Request, res: Response) => {
 
 export const updateTeam: Handler = async (req: Request, res: Response) => {
     try {
-        if(!req.body.id) message.setStatus(400, 'bad Request');
+        if(!validateBody(req.body, 'Team') ) {
+            message.setStatus(400, 'bad Request');
+        }
         else {
+            
+
             const teamUpdated: Team = await teamService.update(req.body);
             message.setStatus(200, [teamUpdated]);
         }
@@ -63,14 +86,15 @@ export const updateTeam: Handler = async (req: Request, res: Response) => {
 
 export const deleteTeam = async (req: Request, res: Response) => {
     try {
-        const aswer: DeleteResult = await teamService.deleteById(req.params.id);
+        const teamName: string = stringChangeFormat(req.params.name);
+        const aswer: DeleteResult = await teamService.deleteByName(teamName);
         message.setStatus(
             aswer.affected ? 200: 400,
-            aswer.affected ? 'team deleted succesfully': `Team with id ${req.params.id} does not exist`
+            aswer.affected ? 'team deleted succesfully': `Team with name ${teamName} does not exist`
         );
     }
     catch (error) {
-        message.setStatus(500, 'internal server error' + error);
+        message.setStatus(500, 'internal server error: ' + error);
     }
     res.status(message.getStatusCode).json(message.getResponse);
 }

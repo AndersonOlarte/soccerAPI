@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import app from "../app";
+import { Player } from "../entity/player.entities";
 import {Team} from "../entity/team.entities";
 
 
@@ -12,7 +12,7 @@ const AppDataSource = new DataSource({
     password: 'anderson',
     synchronize: true,
     logging: true,
-    entities: [Team],
+    entities: [Team, Player],
     subscribers: [],
     migrations: [],
 });
@@ -24,3 +24,5 @@ AppDataSource.initialize()
     .catch((err) => console.log(err));
 
 export const teamRepository = AppDataSource.getRepository(Team);
+
+export const playerRepository = AppDataSource.getRepository(Player);
