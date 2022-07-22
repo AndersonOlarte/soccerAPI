@@ -31,9 +31,9 @@ export class Team {
     players: Player[]
 
     constructor() {
-        this.name = 'none',
-        this.totalPlayers = 0.
-        this.country = 'none'
+        this.name = 'none';
+        this.totalPlayers = 0;
+        this.country = 'none';
     }
     static properties: Array<string> = [
         'country',

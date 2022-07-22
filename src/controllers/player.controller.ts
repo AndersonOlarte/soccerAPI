@@ -4,7 +4,8 @@ import { Player } from "../entity/player.entities";
 import { Team } from "../entity/team.entities";
 import { PlayerService } from "../services/player.service";
 import { TeamService } from "../services/team.service";
-import { validateBody, stringChangeFormat } from "../assests/Assets";
+import { validateBody, stringChangeFormat} from "../assests/Assets";
+import { DeleteResult } from "typeorm";
 
 const message: DataResponse = new DataResponse();
 const playerService = new PlayerService();
@@ -13,26 +14,64 @@ const teamService  = new TeamService();
 export const getAllPlayers: Handler = async (req: Request, res: Response) => {
     try {
         const allPlayers: Player[] = await playerService.getAllPlayers();
-        message.setStatus(200, allPlayers);
+        return res.status(200).json({players: allPlayers});
     } catch (error) {
-        message.setStatus(500, "Error: " + error);
+        return res.status(500).json({Error: `${error}`});
     }
-    return res.status(message.getStatusCode).json(message.getData);
+}
+
+export const getPlayersByParam: Handler = async ( req: Request, res:Response) => {
+    try {
+        const foundPlayers: Player[] = await playerService.getByAttribute(req.query);
+        return res.status(200).json({players: [foundPlayers]});
+    } catch (error) {
+        return res.status(500).json({error});
+    }
 }
 
 export const createNewPlayer: Handler = async (req: Request, res: Response) => {
     try {
         if (!validateBody(req.body, 'Player')) {
-            message.setStatus(400, "Bad request");
+            return res.status(400).json({message: 'Bad Request.'});
         }
         else{
             const playerTeam: Team [] = await teamService.getByAttribute("name", req.body.team);
             const newPlayer: Player = new Player(req.body.id, req.body.name, req.body.age, playerTeam[0]);
             const playerCreated: Player = await playerService.create(newPlayer);
-            message.setStatus(201, [playerCreated]);
+            return res.status(201).json({player: playerCreated});
         }
     } catch (error) {
-        message.setStatus(500, "error" + error);
+        res.status(500).json({error: `${error}`});
     }
-    return res.status(message.getStatusCode).json(message.getResponse);
+}
+
+export const updatePlayer: Handler = async (req: Request, res: Response) => {
+    try {
+        if(!validateBody(req.body, 'Player')) {
+            return res.status(400).json({message: `Bad request`});
+        }
+        const id: string = req.body.id;
+        console.log(id);
+        const playerToUpdate: Player [] = await playerService.getByAttribute({id});
+        console.log(playerToUpdate);
+        if(playerToUpdate.length) {
+            const teamUpdate: Player = await playerService.update(playerToUpdate[0]);
+            return res.status(200).json({teamUpdate})
+        }
+        return res.status(400).json({message: `Unable to find a player with ID: ${id}`})
+    } catch (error) {
+        return res.status(500).json({error})
+    }
+}
+
+export const deletePlayer: Handler = async (req: Request, res: Response) => {
+    try {
+        const playerId: string = stringChangeFormat(req.params.id);
+        const answer: DeleteResult = await playerService.deleteById(playerId);
+        if(answer.affected) return res.status(200).json({message: 'Team deleted succesfully'});
+        return res.status(400).json({message:  `Team with id ${playerId} does not exist`});
+    }
+    catch (error) {
+        return res.status(500).json({message: `Error: ${error}`});
+    }
 }

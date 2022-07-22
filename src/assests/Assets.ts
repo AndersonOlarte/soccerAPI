@@ -15,6 +15,11 @@ export const validateBody = (reqBody: object, entity: string) => {
     return true;
 }
 
+export const validateParam = (param: string, entity: string) => {
+    if (entity === "Player") return Player.properties.includes(param);
+    return Team.properties.includes(param);
+}
+
 export const stringChangeFormat = (teamName: string): string => {
     teamName = teamName.replace("-", " ");
     if(teamName.includes("-")) teamName = stringChangeFormat(teamName);

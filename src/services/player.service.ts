@@ -17,9 +17,9 @@ export class PlayerService {
         })
     };
 
-    getById(id: string): Promise<Player []> {
+    getByAttribute(params: object): Promise<Player []> {
         return new Promise((resolve, reject) => {
-            playerRepository.findBy({id})
+            playerRepository.findBy(params)
             .then(resolve)
             .catch(reject);
         })
@@ -46,7 +46,7 @@ export class PlayerService {
 
     update (updatePlayerSent: Player): Promise<Player> {
         return new Promise((resolve, reject) => {
-            teamRepository.save(updatePlayerSent)
+            playerRepository.save(updatePlayerSent)
             .then(resolve)
             .catch(reject);
         })
@@ -54,7 +54,7 @@ export class PlayerService {
 
     deleteById (id: string): Promise<DeleteResult> {
         return new Promise((resolve, reject) => {
-            teamRepository.delete(id)
+            playerRepository.delete(id)
             .then(resolve)
             .catch(reject)
         })
