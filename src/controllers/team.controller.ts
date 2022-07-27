@@ -23,7 +23,7 @@ export const getAllTeams: Handler = async (req: Request, res: Response) => {
 export const getTeamByName: Handler = async (req: Request, res: Response) => {
     const requestName: string = req.params.name.replace("-", " ");
     try {
-        const team: Team[] = await teamService.getByAttribute("name", requestName);
+        const team: Team[] = await teamService.getByAttribute({name: requestName});
 
         if(team.length) message.setStatus(200, team);
         else message.setStatus(400, `It was imposible find a team with name ${requestName}`);
@@ -37,7 +37,7 @@ export const getTeamByName: Handler = async (req: Request, res: Response) => {
 export const getPlayers: Handler = async (req: Request, res: Response) => {
     try {
         const teamName: string = req.params.name.replace("-"," ",);
-        const team: Team [] = await teamService.getByAttribute("name", teamName);
+        const team: Team [] = await teamService.getByAttribute({name: teamName});
         if (team.length) {
             const players: Player[] = await teamService.getPlayers(team[0]);
             console.log("Players", players);
@@ -73,15 +73,13 @@ export const updateTeam: Handler = async (req: Request, res: Response) => {
             message.setStatus(400, 'bad Request');
         }
         else {
-            
-
-            const teamUpdated: Team = await teamService.update(req.body);
-            message.setStatus(200, [teamUpdated]);
+            await teamService.update(req.body);
+            return res.status(200).json({message: 'Team updated succesfully!'});
         }
     } catch (error) {
-        message.setStatus(200, 'internal server error' + error);
+        message.setStatus(500, 'internal server error' + error);
     }
-    return res.status(message.getStatusCode).json(message.getResponse);
+    return res.status(message.getStatusCode).json();
 }
 
 export const deleteTeam = async (req: Request, res: Response) => {

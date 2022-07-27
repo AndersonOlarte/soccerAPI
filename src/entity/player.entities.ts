@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Team } from "./team.entities";
 
 
@@ -15,20 +15,20 @@ export class Player {
     @Column()
     age: number;
 
-    @ManyToOne(() =>Team, (team) =>team.players)
+    @ManyToOne(() => Team, (team) =>team.players, {onDelete: "CASCADE"})
+    @JoinColumn()
     team: Team;
 
-    constructor(id: string, name: string, age: number, team: Team) {
-        this.id = id;
+    constructor(name: string, age: number, team: Team) {
         this.name = name;
         this.age = age;
         this.team = team;
+
     }
 
     static properties: Array<string> = [
         'age',
-        'id',
         'name',
-        'team'
+        'team',
     ];
 }

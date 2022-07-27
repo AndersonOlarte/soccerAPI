@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import {teamRoutes} from './routes/team.routes';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi  from 'swagger-ui-express';
-import { options } from './swaggerOptions';
+import { options } from './swaggerDocs/swaggerOptions';
 import { playerRoutes } from './routes/player.routes';
 
 const app = express();

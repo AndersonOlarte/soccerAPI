@@ -4,14 +4,17 @@ import {
     deletePlayer,
     getAllPlayers,
     getPlayersByParam,
+    testPlayer,
     updatePlayer
 } from "../controllers/player.controller";
 
 export const playerRoutes: Router = Router();
 
-playerRoutes.get("/api/players", getAllPlayers)
+playerRoutes.get("/api/players", getAllPlayers);
 
-playerRoutes.get("/api/player", getPlayersByParam)
+playerRoutes.get("/api/test", testPlayer);
+
+playerRoutes.get("/api/player", getPlayersByParam);
 
 playerRoutes.post('/api/player', createNewPlayer);
 

@@ -1,4 +1,4 @@
-import { DeleteResult } from "typeorm";
+import { DeleteResult, UpdateResult } from "typeorm";
 import { Player } from "../entity/player.entities";
 import {Team, TeamDao} from "../entity/team.entities";
 import { playerRepository, teamRepository } from "../migration/data-source";
@@ -19,15 +19,13 @@ export class TeamService {
         })
     };
     /**
-     * @param teamId
+     * @param paramQuery
      * @returns Team what matches with the corresponding ID
      */
-    getByAttribute (paramQuery: string, value: string): Promise<Team []> {
+    getByAttribute (paramQuery: object): Promise<Team []> {
 
         return new Promise((resolve, reject) => {
-            teamRepository.findBy({
-                [paramQuery]: value
-            })
+            teamRepository.findBy(paramQuery)
             .then(resolve)
             .catch(reject);
         })
@@ -60,15 +58,22 @@ export class TeamService {
 
     update (updateTeamSend: Team): Promise<Team> {
         return new Promise((resolve, reject) => {
-            teamRepository.save(updateTeamSend)
-            .then(resolve)
+           teamRepository.findOneBy({name: updateTeamSend.name})
+           .then((teamToUpdate: Team  | null) => {
+                if (teamToUpdate) {
+                    teamToUpdate = {...teamToUpdate, ...updateTeamSend};
+                    resolve(teamRepository.save(teamToUpdate))
+                }
+                reject(`Team with name ${updateTeamSend.name} does not exist.`);
+           })
             .catch(reject);
         })
     }
 
     deleteByName(teamName: string): Promise<DeleteResult> {
+        console.log(teamName);
         return new Promise((resolve, reject) => {
-            teamRepository.delete(teamName)
+            teamRepository.delete({name: teamName})
             .then(resolve)
             .catch(reject);
         })

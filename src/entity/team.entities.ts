@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Unique, PrimaryColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Unique, PrimaryColumn, JoinColumn } from "typeorm";
 import { IReqBody } from "../interfaces/IReqBody";
 import { Player } from "./player.entities";
 
@@ -18,7 +18,10 @@ export class TeamDao {
 @Unique(["name"])
 export class Team {
 
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn("increment")
+    id: number;
+
+    @Column()
     name: string;
 
     @Column()
@@ -28,6 +31,7 @@ export class Team {
     country: string;
 
     @OneToMany(() => Player, (player) => player.team)
+    @JoinColumn()
     players: Player[]
 
     constructor() {

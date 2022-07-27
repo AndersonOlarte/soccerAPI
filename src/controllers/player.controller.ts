@@ -35,9 +35,9 @@ export const createNewPlayer: Handler = async (req: Request, res: Response) => {
             return res.status(400).json({message: 'Bad Request.'});
         }
         else{
-            const playerTeam: Team [] = await teamService.getByAttribute("name", req.body.team);
-            const newPlayer: Player = new Player(req.body.id, req.body.name, req.body.age, playerTeam[0]);
-            const playerCreated: Player = await playerService.create(newPlayer);
+            const teamRequested: Team [] = await teamService.getByAttribute({name: req.body.team});
+            const playerCreated: Player = await playerService.create(req.body, teamRequested[0]);
+
             return res.status(201).json({player: playerCreated});
         }
     } catch (error) {
@@ -73,5 +73,15 @@ export const deletePlayer: Handler = async (req: Request, res: Response) => {
     }
     catch (error) {
         return res.status(500).json({message: `Error: ${error}`});
+    }
+}
+
+export const testPlayer: Handler = async (req:Request, res: Response) => {
+    try {
+        const team: Team [] = await teamService.getAll();
+        const response = await playerService.functionTest({name: 'pedro', age: 12},team[0]);
+        return res.status(200).json(response);
+    } catch {
+        return res.status(500).json('fallo la app');
     }
 }

@@ -1,0 +1,66 @@
+components:
+  schemas:
+    TeamDao:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name send to send in database
+        totalPlayers:
+          type: number
+          description: Total amount in the team
+        country:
+          type: string
+          description: Country where the team belongs
+      example:
+        name: Real Madrid
+        totalPlayers: 27
+        country: Spain
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique id that identified the team
+        name:
+          type: string
+          description: Name send to send in database
+        totalPlayers:
+          type: number
+          description: Total amount in the team
+        country:
+          type: string
+          description: Country where the team belongs
+      example:
+        id: 6418232f-885b-40b5-ac7b-5eabab4031c4
+        name: Real Madrid
+        totalPlayers: 27
+        country: Spain
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID that identifies every player
+        name:
+          type: string
+          description: player name
+        age:
+          type: number
+          description: Player age
+        team:
+          $ref: '#/components/schemas/Team'
+      example:
+        id: '100101290942'
+        name: 'Jhon Doe'
+        age: 32
+        team:
+          id: 6418232f-885b-40b5-ac7b-5eabab4031c4
+          name: Real Madrid
+          totalPlayers: 27
+          country: Spain
+
+
+tags:
+  name: Team
+  description: Team EndPoint

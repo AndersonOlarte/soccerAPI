@@ -11,7 +11,11 @@ export class PlayerService {
 
         // TODO: check the list the application returns contains the team name
         return new Promise((resolve, reject) => {
-            playerRepository.find()
+            playerRepository.find({
+                relations:{
+                    team: true
+                }
+            })
             .then(resolve)
             .catch(reject);
         })
@@ -27,17 +31,19 @@ export class PlayerService {
 
     getByTeam(team: Team): Promise<Player []> {
         return new Promise ((resolve, reject) => {
-            playerRepository.findBy({team})
+            playerRepository.findBy({team},)
             .then(resolve)
             .catch(reject);
         })
     }
 
-    create(playerSent: Player): Promise<Player> {
+    create(playerSent: any, teamSent: Team): Promise<Player> {
         //TODO: check the application verifies the team exist before create a new player.
 
         return new Promise((resolve, reject) => {
-            const newPlayer = playerRepository.create(playerSent);
+            const newPlayer = new Player(playerSent.name, playerSent.age, teamSent);
+            console.log(teamSent);
+            console.log(newPlayer);
             playerRepository.save(newPlayer)
             .then(resolve)
             .catch(reject);
@@ -55,6 +61,16 @@ export class PlayerService {
     deleteById (id: string): Promise<DeleteResult> {
         return new Promise((resolve, reject) => {
             playerRepository.delete(id)
+            .then(resolve)
+            .catch(reject)
+        })
+    }
+
+    functionTest (teamSent: any, team:Team) {
+        const player: Player = new Player(teamSent.name, teamSent.age, team);
+        console.log(player);
+        return new Promise((resolve, reject) => {
+            playerRepository.save(player)
             .then(resolve)
             .catch(reject)
         })

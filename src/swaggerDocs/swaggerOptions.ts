@@ -12,5 +12,5 @@ export const options = {
             }
         ]
     },
-    apis: ['./src/routes/*.yaml']
+    apis: ['src/swaggerDocs/*.yaml']
 }
